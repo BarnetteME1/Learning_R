@@ -80,3 +80,10 @@ qplot(x = color, y = price/carat, data = diamonds, geom =  'boxplot') +
 ggsave("Plots/boxplot_price_per_carat_by_color.png")
 
 #Q13
+qplot(x = carat, data = diamonds, bins = 30, geom = 'freqpoly', color = cut)
+
+#Q14
+
+
+#Q15
+
