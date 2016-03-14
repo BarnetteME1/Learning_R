@@ -16,9 +16,9 @@ mean(diamonds$price)
 median(diamonds$price)
 
 #Q4
-summary(diamonds$price < 500)
-summary(diamonds$price < 250)
-summary(diamonds$price >= 15000)
+nrow(subset(diamonds, price < 500))
+nrow(subset(diamonds, price < 250))
+nrow(subset(diamonds, price >= 15000))
 
 #Q5
 qplot(x = price, data = diamonds, binwidth = 250, color = I('black'), 
@@ -50,10 +50,33 @@ qplot(x = price, data = diamonds, binwidth = 250, color = I('black'),
   facet_wrap(~cut, scales = 'free')
 
 #Q9
-qplot(x = price, data = diamonds, color = I('black'), 
+qplot(x = price/carat, data = diamonds, color = I('black'), 
       xlab = "Price of Diamonds",
       ylab = "Number of Diamonds",
       fill = I('Red')) + 
-  scale_x_continuous(breaks = seq(0, 19000, 2500)) +
-  facet_wrap(~cut, scales = 'free') + 
-  scale_x_log10()
+  scale_x_log10() +
+  facet_wrap(~cut, scales = 'free')
+
+#Q10
+qplot(x = cut, y = price, data = diamonds, geom =  'boxplot') + 
+  coord_cartesian(ylim = c(0, 6500))
+ggsave("Plots/boxplot_price_by_cut.png")
+
+qplot(x = clarity, y = price, data = diamonds, geom =  'boxplot') + 
+  coord_cartesian(ylim = c(0, 6500))
+ggsave("Plots/boxplot_price_by_clarity.png")
+
+qplot(x = color, y = price, data = diamonds, geom =  'boxplot') + 
+  coord_cartesian(ylim = c(0, 7500))
+ggsave("Plots/boxplot_price_by_color.png")
+
+#Q11
+by(diamonds$price, diamonds$color, summary)
+by(diamonds$price, diamonds$color, IQR)
+
+#Q12
+qplot(x = color, y = price/carat, data = diamonds, geom =  'boxplot') + 
+  coord_cartesian(ylim = c(2000, 6000))
+ggsave("Plots/boxplot_price_per_carat_by_color.png")
+
+#Q13
