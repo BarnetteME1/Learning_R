@@ -1,3 +1,6 @@
+---
+output: pdf_document
+---
 Lesson 4
 ========================================================
 
@@ -13,7 +16,7 @@ Notes:
 
 ```{r Scatterplots}
 library(ggplot2)
-pf <- read.csv('sv_files/pseudo_facebook.tsv', sep = '\t')
+pf <- read.csv('~/R/sv_files/pseudo_facebook.tsv', sep = '\t')
 
 qplot(x = age, y = friend_count, data = pf)
 ```
@@ -287,7 +290,20 @@ head(pf.fc_by_age_month)
 ### Noise in Conditional Means
 
 ```{r Noise in Conditional Means}
+age_w_month <- ggplot(aes(x = age_with_months, y = friend_count_mean), 
+       data = subset(pf.fc_by_age_month, age_with_months < 71)) + 
+  geom_line() + 
+  geom_smooth()
 
+age_w_year <- ggplot(aes(x = age, y = friend_count_mean), 
+                     data = subset(pf.fc_by_age, age < 71)) + 
+  geom_line() + 
+  geom_smooth()
+
+age_w_5_years <- ggplot(aes(x = round(age/5) * 5, y = friend_count), 
+                     data = subset(pf, age < 71)) + 
+  geom_line(stat = 'summary', fun.y = mean) + 
+  geom_smooth()
 ```
 
 ***
@@ -296,21 +312,10 @@ head(pf.fc_by_age_month)
 Notes:
 
 ```{r Smoothing Conditional Means}
-
+library(gridExtra)
+grid.arrange(age_w_month, age_w_year, age_w_5_years, ncol = 1)
 ```
 
-***
-
-### Which Plot to Choose?
-Notes:
-
-***
-
-### Analyzing Two Variables
-Reflection:
-
-***
 
 Click **KnitHTML** to see all of your hard work and to have an html
 page of this lesson, your answers, and your notes!
-

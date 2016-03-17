@@ -1,22 +1,16 @@
 Lesson 5
 ========================================================
 
-### Multivariate Data
-Notes:
 
-***
-
-### Moira Perceived Audience Size Colored by Age
-Notes:
-
-***
-
-### Third Qualitative Variable
-Notes:
 
 ```{r Third Qualitative Variable}
+pf <- read.csv('')
+
 ggplot(aes(x = gender, y = age),
-       data = subset(pf, !is.na(gender))) + geom_histogram()
+       data = subset(pf, !is.na(gender))) + geom_boxplot() + 
+  stat_summary(fun.y = mean, geom = 'point', shape = 4)
+
+ggplot(aes(x = gender, y = friend_count))
 ```
 
 ***
