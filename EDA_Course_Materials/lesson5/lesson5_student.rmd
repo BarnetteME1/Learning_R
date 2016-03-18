@@ -21,41 +21,30 @@ ggplot(aes(x = age, y = friend_count),
 pf.fc_by_age_gender <- pf %>%
   na.omit() %>%
   group_by(age, gender) %>%
-  summarize(friend_count_mean = mean(friend_count),
-            friend_count_median = median(friend_count),
+  summarize(mean_friend_count = mean(friend_count),
+            median_friend_count = median(friend_count),
             n = n())
 head(pf.fc_by_age_gender)
 ```
 
 ***
 
-### Plotting Conditional Summaries
-Notes:
 
 ```{r Plotting Conditional Summaries}
 ggplot(data = pf.fc_by_age_gender,
-       aes(x = age, y = friend_count_median)) + 
+       aes(x = age, y = median_friend_count)) + 
   geom_line(aes(color = gender))
 ```
 
 ***
 
-### Thinking in Ratios
-Notes:
-
-***
-
-### Wide and Long Format
-Notes:
-
-***
-
-### Reshaping Data
-Notes:
 
 ```{r}
-install.packages('reshape2')
 library(reshape2)
+
+pf.fc_by_age_gender.wide <- dcast(pf.fc_by_age_gender,
+                                  age ~ gender,
+                                  value.var = 'median_friend_count')
 ```
 
 
@@ -65,7 +54,10 @@ library(reshape2)
 Notes:
 
 ```{r Ratio Plot}
-
+ggplot(aes(x = age, y = female/male), 
+       data = pf.fc_by_age_gender.wide) + 
+  geom_line() + 
+  geom_hline(yintercept = 1, alpha = 0.3, linetype = 2)
 ```
 
 ***
@@ -74,6 +66,9 @@ Notes:
 Notes:
 
 ```{r Third Quantitative Variable}
+names(pf)
+pf$year_joined <- 2014 - floor(pf$tenure/365)
+rnorm(pf$age)
 
 ```
 
