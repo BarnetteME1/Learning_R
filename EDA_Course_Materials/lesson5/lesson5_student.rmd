@@ -4,13 +4,27 @@ Lesson 5
 
 
 ```{r Third Qualitative Variable}
-pf <- read.csv('')
+library(ggplot2)
+library(dplyr)
+pf <- read.csv('~/R/sv_files/pseudo_facebook.tsv', sep = '\t')
 
 ggplot(aes(x = gender, y = age),
        data = subset(pf, !is.na(gender))) + geom_boxplot() + 
-  stat_summary(fun.y = mean, geom = 'point', shape = 4)
+  stat_summary(fun.y = mean, geom = 'point', shape = 4) + 
+  coord_cartesian(ylim = c(10, 60))
 
-ggplot(aes(x = gender, y = friend_count))
+ggplot(aes(x = age, y = friend_count), 
+       data = subset(pf, !is.na(gender))) + 
+  geom_line(aes(color = gender), stat = 'summary', fun.y = median)
+
+
+pf.fc_by_age_gender <- pf %>%
+  na.omit() %>%
+  group_by(age, gender) %>%
+  summarize(friend_count_mean = mean(friend_count),
+            friend_count_median = median(friend_count),
+            n = n())
+head(pf.fc_by_age_gender)
 ```
 
 ***
@@ -19,7 +33,9 @@ ggplot(aes(x = gender, y = friend_count))
 Notes:
 
 ```{r Plotting Conditional Summaries}
-
+ggplot(data = pf.fc_by_age_gender,
+       aes(x = age, y = friend_count_median)) + 
+  geom_line(aes(color = gender))
 ```
 
 ***
