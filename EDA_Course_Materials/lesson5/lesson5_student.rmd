@@ -173,7 +173,15 @@ ggplot(aes(x = 90 * round(tenure / 90), y = friendships_initiated / tenure),
 ***
 
 ```{r Histograms Revisited}
+yogurt <- read.csv('~/R/sv_files/yogurt.csv')
+yogurt$id <- factor(yogurt$id)
 
+str(yogurt)
+
+sd(yogurt$price)
+
+ggplot(aes(x = price), data = yogurt) + 
+  geom_histogram(binwidth = 5, fill = 'orange')
 ```
 
 ***
@@ -182,7 +190,9 @@ ggplot(aes(x = 90 * round(tenure / 90), y = friendships_initiated / tenure),
 Notes:
 
 ```{r Number of Purchases}
-
+str(yogurt)
+yogurt$all.purchases <- (yogurt$strawberry + yogurt$blueberry + yogurt$pina.colada +
+                           yogurt$plain + yogurt$mixed.berry)
 ```
 
 ***
