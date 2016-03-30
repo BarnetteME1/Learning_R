@@ -78,7 +78,10 @@ rnorm(pf$age)
 Notes:
 
 ```{r Cut a Variable}
-
+summary(pf$year_joined)
+table(pf$year_joined)
+?cut
+pf$year_joined.bucket <- cut(pf$year_joined, c(2004, 2009, 2011, 2012, 2014))
 ```
 
 ***
@@ -87,7 +90,12 @@ Notes:
 Notes:
 
 ```{r Plotting it All Together}
+table(pf$year_joined.bucket, useNA = 'ifany')
 
+ggplot(aes(x = age, y = friend_count),
+       data = subset(pf, !is.na(year_joined.bucket))) + 
+  geom_line(aes(color = year_joined.bucket),
+            stat = 'summary', fun.y = median)
 ```
 
 ***
@@ -96,7 +104,12 @@ Notes:
 Notes:
 
 ```{r Plot the Grand Mean}
-
+ggplot(aes(x = age, y = friend_count),
+       data = subset(pf, !is.na(year_joined.bucket))) + 
+  geom_line(aes(color = year_joined.bucket),
+            stat = 'summary', fun.y = mean) +
+  geom_line(aes(x = age, y = friend_count), data = pf,
+            stat = 'summary', fun.y = mean, linetype = 2)
 ```
 
 ***
