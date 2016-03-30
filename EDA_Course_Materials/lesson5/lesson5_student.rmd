@@ -191,8 +191,8 @@ Notes:
 
 ```{r Number of Purchases}
 str(yogurt)
-yogurt$all.purchases <- (yogurt$strawberry + yogurt$blueberry + yogurt$pina.colada +
-                           yogurt$plain + yogurt$mixed.berry)
+yogurt <- transform(yogurt, all.purchases = (strawberry + blueberry + pina.colada + 
+                            plain + mixed.berry))
 ```
 
 ***
