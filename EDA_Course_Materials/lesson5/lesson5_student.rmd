@@ -220,7 +220,21 @@ ggplot(aes(x = time, y = price), data = subset(yogurt, id %in% sample.ids)) +
 ```
 
 ```{r}
-nci <- read.table("nci.tsv")
+library(GGally)
+
+theme_set(theme_minimal(20))
+
+# set seed for reproducible results
+set.seed(1836)
+pf_subset <- pf[, c(2:15)]
+names(pf_subset)
+ggpairs(pf_subset[sample.int(nrow(pf_subset), 1000), ])
+```
+
+
+```{r}
+nci <- read.table("~/R/EDA_Course_Materials/lesson5/nci.tsv")
+
 colnames(nci) <- c(1:64)
 ```
 
