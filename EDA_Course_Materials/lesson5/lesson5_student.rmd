@@ -1,3 +1,6 @@
+---
+output: pdf_document
+---
 Lesson 5
 ========================================================
 
@@ -68,7 +71,6 @@ Notes:
 ```{r Third Quantitative Variable}
 names(pf)
 pf$year_joined <- 2014 - floor(pf$tenure/365)
-rnorm(pf$age)
 
 ```
 
@@ -201,46 +203,21 @@ yogurt <- transform(yogurt, all.purchases = (strawberry + blueberry + pina.colad
 Notes:
 
 ```{r Prices over Time}
-
+ggplot(aes(x=all.purchases), data = yogurt) + 
+  geom_histogram(binwidth = 1, fill = 'orange')
 ```
-
-***
-
-### Sampling Observations
-Notes:
-
-***
 
 ### Looking at Samples of Households
 
 ```{r Looking at Sample of Households}
+set.seed(8473)
+sample.ids <- sample(yogurt$id, 16)
 
+ggplot(aes(x = time, y = price), data = subset(yogurt, id %in% sample.ids)) + 
+  facet_wrap(~ id) +
+  geom_line() +
+  geom_point(aes(size = all.purchases), pch = 1)
 ```
-
-***
-
-### The Limits of Cross Sectional Data
-Notes:
-
-***
-
-### Many Variables
-Notes:
-
-***
-
-### Scatterplot Matrix
-Notes:
-
-***
-
-### Even More Variables
-Notes:
-
-***
-
-### Heat Maps
-Notes:
 
 ```{r}
 nci <- read.table("nci.tsv")
