@@ -9,7 +9,14 @@ Notes:
 ### Scatterplot Review
 
 ```{r Scatterplot Review}
+library(ggplot2)
+data(diamonds)
+str(diamonds)
 
+ggplot(aes(x = carat, y = price), data = diamonds) +
+  xlim = c(0, quantile(diamonds$carat, .99)) +
+  ylim = c(0, quantile(diamonds$price, .99) +
+  geom_jitter(alpha = .2, color = 'blue')
 ```
 
 ***
