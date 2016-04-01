@@ -13,89 +13,63 @@ library(ggplot2)
 data(diamonds)
 str(diamonds)
 
-ggplot(aes(x = carat, y = price), data = diamonds) +
-  xlim = c(0, quantile(diamonds$carat, .99)) +
-  ylim = c(0, quantile(diamonds$price, .99) +
-  geom_jitter(alpha = .2, color = 'blue')
+ggplot(aes(x = carat, y = price), data = diamonds,
+  xlim = c(0, quantile(diamonds$carat, 0.99)),
+  ylim = c(0, quantile(diamonds$price, 0.99))) +
+  geom_jitter(alpha = .25, color = 'blue')
 ```
 
 ***
 
 ### Price and Carat Relationship
 Response:
-
+There definitely seems to be a correlation. Though it does get more scattered as the carat goes on, indicating other factors in pricing.
 ***
-
-### Frances Gerety
-Notes:
-
-#### A diamonds is
-
-
-***
-
-### The Rise of Diamonds
-Notes:
-
-***
-
-### ggpairs Function
-Notes:
 
 ```{r ggpairs Function}
-# install these if necessary
-install.packages('GGally')
-install.packages('scales')
-install.packages('memisc')
-install.packages('lattice')
-install.packages('MASS')
-install.packages('car')
-install.packages('reshape')
-install.packages('plyr')
 
 # load the ggplot graphics package and the others
 library(ggplot2)
 library(GGally)
 library(scales)
 library(memisc)
+library(gridExtra)
 
 # sample 10,000 diamonds from the data set
 set.seed(20022012)
 diamond_samp <- diamonds[sample(1:length(diamonds$price), 10000), ]
-ggpairs(diamond_samp, params = c(shape = I('.'), outlier.shape = I('.')))
+help("wrap", package = "GGally")
+ggpairs(diamond_samp, wrap = c(shape = I('.'), outlier.shape = I('.')))
 ```
 
-What are some things you notice in the ggpairs output?
-Response:
-
 ***
-
-### The Demand of Diamonds
-Notes:
 
 ```{r The Demand of Diamonds}
+price_hist <- ggplot(aes(x = price), data = diamond_samp) +
+  geom_histogram(color = 'blue', binwidth = 100)
 
+price_log_hist <- ggplot(aes(x = price), data = diamond_samp) +
+  scale_x_log10() +
+  geom_histogram(color = 'blue', binwidth = .01)
+
+grid.arrange(price_hist, price_log_hist, ncol = 2)
 ```
 
 ***
-
-### Connecting Demand and Price Distributions
-Notes:
-
-***
-
-### Scatterplot Transformation
-
-```{r Scatterplot Transformation}
-
-```
-
 
 ### Create a new function to transform the carat variable
 
 ```{r cuberoot transformation}
 cuberoot_trans = function() trans_new('cuberoot', transform = function(x) x^(1/3),
                                       inverse = function(x) x^3)
+
+ggplot(aes(carat, price), data = diamonds) + 
+  geom_jitter(alpha = .5, size = .75) + 
+  scale_x_continuous(trans = cuberoot_trans(), limits = c(0.2, 3),
+                     breaks = c(0.2, 0.5, 1, 2, 3)) + 
+  scale_y_continuous(trans = log10_trans(), limits = c(350, 15000),
+                     breaks = c(350, 1000, 5000, 10000, 15000)) +
+  ggtitle('Price (log10) by Cube-Root of Carat')
 ```
 
 #### Use the cuberoot_trans function
@@ -130,20 +104,13 @@ ggplot(aes(carat, price), data = diamonds) +
 
 ***
 
-### Other Qualitative Factors
-Notes:
-
-***
-
 ### Price vs. Carat and Clarity
 
 Alter the code below.
 ```{r Price vs. Carat and Clarity}
-# install and load the RColorBrewer package
-install.packages('RColorBrewer')
 library(RColorBrewer)
 
-ggplot(aes(x = carat, y = price), data = diamonds) + 
+ggplot(aes(x = carat, y = price, color = clarity), data = diamonds) + 
   geom_point(alpha = 0.5, size = 1, position = 'jitter') +
   scale_color_brewer(type = 'div',
     guide = guide_legend(title = 'Clarity', reverse = T,
